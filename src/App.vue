@@ -1,17 +1,17 @@
 <script setup>
 import Cabecalho from "./components/Cabecalho.vue";
+import Usuario from "./components/Usuario.vue";
 </script>
 
 <template>
   <NavBar></NavBar>
-  <component is="NavBar"></component>
   <header>
     <Cabecalho />
-    <cabecalho></cabecalho>
-    <Cabecalho></Cabecalho>
   </header>
 
-  <main></main>
+  <main>
+    <Usuario></Usuario>
+  </main>
 </template>
 
 <style>
