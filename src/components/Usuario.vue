@@ -1,46 +1,39 @@
 <script setup>
-import { reactive } from "vue";
-// const nome = ref("Pablo Codes");
-// const dataNascimento = ref(0);
-// const idade = ref(25);
+import { ref } from "vue";
+const nome = ref("Pablo Codes");
+const dataNascimento = ref(0);
+const idade = ref(0);
+const idadeFutura = ref(0);
 
-// console.log(idade.value);
+const calcularIdade = () => {
+  idade.value = 2023 - dataNascimento.value;
+};
 
-// idade.value = 27;
-
-// console.log(idade.value);
-
-const pessoa = reactive({
-  nome: "",
-  dataNascimento: 0,
-  idade: 0,
-});
-
-console.log(pessoa.idade);
-
-pessoa.idade = 27;
-
-console.log(pessoa.idade);
+const calcularIdadeParametro = (valor) => {
+  debugger;
+  idadeFutura.value = idade.value + valor;
+};
 </script>
 
 <template>
   <div>
     <form class="formulario">
       <label for="nome">Nome:</label><br />
-      <input type="text" id="nome" name="nome" v-model="pessoa.nome" /><br />
+      <input type="text" id="nome" name="nome" v-model="nome" /><br />
       <label for="dataNascimento">Data Nascimento:</label><br />
       <input
         type="number"
         id="dataNascimento"
         name="dataNascimento"
-        v-model="pessoa.dataNascimento"
+        v-model="dataNascimento"
       /><br />
     </form>
   </div>
 
-  <p style="text-align: center">
-    {{ pessoa.nome }} nasceu em {{ pessoa.dataNascimento }}
-  </p>
+  <button class="botao" v-on:click="calcularIdade">Calcula idade</button>
+  <p style="text-align: center">{{ nome }} tem {{ idade }}</p>
+  <button class="botao" v-on:click="calcularIdadeParametro(2)">+2</button>
+  <p style="text-align: center">{{ nome }} tem {{ idadeFutura }}</p>
 </template>
 
 <style scoped>
@@ -49,5 +42,18 @@ console.log(pessoa.idade);
   padding: 5px;
   width: 200px;
   background-color: darkcyan;
+}
+
+.botao {
+  margin: 5px auto;
+  padding: 5px;
+  display: block;
+  background: darkcyan;
+  border-radius: 5px;
+  border-style: none;
+  cursor: pointer;
+}
+.botao:hover {
+  background: rgb(102, 147, 147);
 }
 </style>
