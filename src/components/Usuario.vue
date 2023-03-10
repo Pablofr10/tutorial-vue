@@ -1,39 +1,25 @@
 <script setup>
-import { ref } from "vue";
-const nome = ref("Pablo Codes");
-const dataNascimento = ref(0);
-const idade = ref(0);
-const idadeFutura = ref(0);
+import { ref, onMounted } from "vue";
 
-const calcularIdade = () => {
-  idade.value = 2023 - dataNascimento.value;
-};
+const pessoa = ref({});
 
-const calcularIdadeParametro = (valor) => {
-  debugger;
-  idadeFutura.value = idade.value + valor;
+onMounted(async () => {
+  pessoa.value = await buscaInformacoes();
+});
+
+const buscaInformacoes = async () => {
+  const req = await fetch("https://reqres.in/api/users/1");
+  const json = await req.json();
+  return json.data;
 };
 </script>
 
 <template>
-  <div>
-    <form class="formulario">
-      <label for="nome">Nome:</label><br />
-      <input type="text" id="nome" name="nome" v-model="nome" /><br />
-      <label for="dataNascimento">Data Nascimento:</label><br />
-      <input
-        type="number"
-        id="dataNascimento"
-        name="dataNascimento"
-        v-model="dataNascimento"
-      /><br />
-    </form>
+  <div class="perfil">
+    <img v-bind:src="pessoa.avatar" alt="Perfil" />
+    <strong>{{ pessoa.first_name + pessoa.last_name }}</strong>
+    <span>{{ pessoa.email }}</span>
   </div>
-
-  <button class="botao" v-on:click="calcularIdade">Calcula idade</button>
-  <p style="text-align: center">{{ nome }} tem {{ idade }}</p>
-  <button class="botao" v-on:click="calcularIdadeParametro(2)">+2</button>
-  <p style="text-align: center">{{ nome }} tem {{ idadeFutura }}</p>
 </template>
 
 <style scoped>
@@ -55,5 +41,20 @@ const calcularIdadeParametro = (valor) => {
 }
 .botao:hover {
   background: rgb(102, 147, 147);
+}
+.perfil {
+  width: 150px;
+  text-align: center;
+}
+.perfil img {
+  margin: 0 auto;
+  width: 80px;
+  display: block;
+  padding: 5px;
+  border-radius: 10px;
+}
+.perfil span {
+  display: block;
+  font-size: 0.75rem;
 }
 </style>
