@@ -1,23 +1,50 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 
 const pessoa = ref({});
+const codigoUsuario = ref(0);
 
 onMounted(async () => {
-  pessoa.value = await buscaInformacoes();
+  pessoa.value = await buscaInformacoes(1);
 });
 
-const buscaInformacoes = async () => {
-  const req = await fetch("https://reqres.in/api/users/1");
+const habilitaBotao = computed(() => codigoUsuario.value > 0);
+
+const nomeCompleto = computed(
+  () => `${pessoa.value.first_name} ${pessoa.value.last_name}`
+);
+
+const pesquisaInformacoes = async () => {
+  pessoa.value = await buscaInformacoes(codigoUsuario.value);
+};
+
+const buscaInformacoes = async (codigo) => {
+  const req = await fetch(`https://reqres.in/api/users/${codigo}`);
   const json = await req.json();
   return json.data;
 };
 </script>
 
 <template>
+  <form class="formulario">
+    <label for="codigoUsuario">Codigo Usuário:</label><br />
+    <input
+      type="text"
+      id="codigoUsuario"
+      name="codigoUsuario"
+      v-model="codigoUsuario"
+    /><br />
+  </form>
+  <button
+    v-bind:disabled="!habilitaBotao"
+    v-on:click="pesquisaInformacoes"
+    class="botao"
+  >
+    Buscar
+  </button>
   <div class="perfil">
     <img v-bind:src="pessoa.avatar" alt="Perfil" />
-    <strong>{{ pessoa.first_name + pessoa.last_name }}</strong>
+    <strong>{{ nomeCompleto }}</strong>
     <span>{{ pessoa.email }}</span>
   </div>
 </template>
@@ -39,8 +66,12 @@ const buscaInformacoes = async () => {
   border-style: none;
   cursor: pointer;
 }
-.botao:hover {
-  background: rgb(102, 147, 147);
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  cursor: default;
 }
 .perfil {
   width: 150px;
