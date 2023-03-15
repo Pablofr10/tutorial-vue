@@ -1,28 +1,28 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
+import { ref, onMounted, computed, watch, watchEffect } from "vue";
 
 const pessoa = ref({});
 const codigoUsuario = ref(0);
 
-onMounted(async () => {
-  pessoa.value = await buscaInformacoes(1);
-});
-
-const habilitaBotao = computed(() => codigoUsuario.value > 0);
-
 const nomeCompleto = computed(
   () => `${pessoa.value.first_name} ${pessoa.value.last_name}`
 );
-
-const pesquisaInformacoes = async () => {
-  pessoa.value = await buscaInformacoes(codigoUsuario.value);
-};
 
 const buscaInformacoes = async (codigo) => {
   const req = await fetch(`https://reqres.in/api/users/${codigo}`);
   const json = await req.json();
   return json.data;
 };
+
+watch(codigoUsuario, (novo, antigo) => {
+  if (novo <= 0) {
+    alert("Codigo Inválido");
+  }
+});
+
+watchEffect(async () => {
+  pessoa.value = await buscaInformacoes(codigoUsuario.value || 1);
+});
 </script>
 
 <template>
@@ -35,13 +35,6 @@ const buscaInformacoes = async (codigo) => {
       v-model="codigoUsuario"
     /><br />
   </form>
-  <button
-    v-bind:disabled="!habilitaBotao"
-    v-on:click="pesquisaInformacoes"
-    class="botao"
-  >
-    Buscar
-  </button>
   <div class="perfil">
     <img v-bind:src="pessoa.avatar" alt="Perfil" />
     <strong>{{ nomeCompleto }}</strong>
