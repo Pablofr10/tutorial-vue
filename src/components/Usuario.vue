@@ -16,13 +16,21 @@ const buscaInformacoes = async (codigo) => {
 
 watch(codigoUsuario, (novo, antigo) => {
   if (novo <= 0) {
-    alert("Codigo Inválido");
+    codigoUsuario.value = 0;
   }
 });
 
 watchEffect(async () => {
   pessoa.value = await buscaInformacoes(codigoUsuario.value || 1);
 });
+
+const chamaAlerta = () => {
+  alert("evento disparado");
+};
+
+const imprimi = (event) => {
+  alert(event.target.value);
+};
 </script>
 
 <template>
@@ -35,8 +43,9 @@ watchEffect(async () => {
       v-model="codigoUsuario"
     /><br />
   </form>
+
   <div class="perfil">
-    <img v-bind:src="pessoa.avatar" alt="Perfil" />
+    <img :src="pessoa.avatar" alt="Perfil" />
     <strong>{{ nomeCompleto }}</strong>
     <span>{{ pessoa.email }}</span>
   </div>
