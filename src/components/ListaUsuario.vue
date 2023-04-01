@@ -24,7 +24,7 @@ onMounted(async () => {
       <h3 style="color: blue" v-else>Operacional</h3>
       <img :src="pessoa.avatar" alt="Perfil" />
       <strong>{{ pessoa.first_name }}</strong>
-      <span style="font-size: 10px">{{ pessoa.email }}</span>
+      <span style="font-size: 10px" v-email="pessoa.email"></span>
     </div>
   </div>
 </template>
