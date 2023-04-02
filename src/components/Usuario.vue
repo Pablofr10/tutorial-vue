@@ -1,64 +1,28 @@
 <script setup>
-import { ref, onMounted, computed, watch, watchEffect } from "vue";
-
-const pessoa = ref({});
-const codigoUsuario = ref(0);
-
-const nomeCompleto = computed(
-  () => `${pessoa.value.first_name} ${pessoa.value.last_name}`
-);
-
-const buscaInformacoes = async (codigo) => {
-  const req = await fetch(`https://reqres.in/api/users/${codigo}`);
-  const json = await req.json();
-  return json.data;
-};
-
-watch(codigoUsuario, (novo, antigo) => {
-  if (novo <= 0) {
-    codigoUsuario.value = 0;
-  }
+defineProps({
+  pessoa: {
+    type: Object,
+    required: true,
+    default: () => ({
+      id: 0,
+      first_name: "",
+      last_name: "",
+      avatar: "",
+      email: "",
+    }),
+  },
 });
-
-watchEffect(async () => {
-  pessoa.value = await buscaInformacoes(codigoUsuario.value || 1);
-});
-
-const chamaAlerta = () => {
-  alert("evento disparado");
-};
-
-const imprimi = (event) => {
-  alert(event.target.value);
-};
 </script>
 
 <template>
-  <form class="formulario">
-    <label for="codigoUsuario">Codigo Usuário:</label><br />
-    <input
-      type="text"
-      id="codigoUsuario"
-      name="codigoUsuario"
-      v-model="codigoUsuario"
-    /><br />
-  </form>
-
   <div class="perfil">
     <img :src="pessoa.avatar" alt="Perfil" />
-    <strong>{{ nomeCompleto }}</strong>
+    <strong>{{ pessoa.first_name }}</strong>
     <span>{{ pessoa.email }}</span>
   </div>
 </template>
 
 <style scoped>
-.formulario {
-  margin: 0 auto;
-  padding: 5px;
-  width: 200px;
-  background-color: darkcyan;
-}
-
 .botao {
   margin: 5px auto;
   padding: 5px;

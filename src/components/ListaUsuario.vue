@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
+import Usuario from "./Usuario.vue";
 
 const pessoas = ref([]);
 
@@ -16,16 +17,11 @@ onMounted(async () => {
 
 <template>
   <div class="pessoas">
-    <div class="perfil" v-for="pessoa in pessoas" :key="pessoa.id">
-      <h3 style="color: red" v-if="pessoa.first_name === 'George'">Gerente</h3>
-      <h3 style="color: yellow" v-else-if="pessoa.first_name === 'Rachel'">
-        Supervisora
-      </h3>
-      <h3 style="color: blue" v-else>Operacional</h3>
-      <img :src="pessoa.avatar" alt="Perfil" />
-      <strong>{{ pessoa.first_name }}</strong>
-      <span style="font-size: 10px" v-email="pessoa.email"></span>
-    </div>
+    <Usuario
+      v-for="pessoa in pessoas"
+      :key="pessoa.id"
+      :pessoa="pessoa"
+    ></Usuario>
   </div>
 </template>
 
