@@ -11,7 +11,14 @@ defineProps({
       email: "",
     }),
   },
+  selecao: Boolean,
 });
+
+const emit = defineEmits(["selecao"]);
+
+const enviaEmit = (id) => {
+  emit("selecao", id);
+};
 </script>
 
 <template>
@@ -19,6 +26,9 @@ defineProps({
     <img :src="pessoa.avatar" alt="Perfil" />
     <strong>{{ pessoa.first_name }}</strong>
     <span>{{ pessoa.email }}</span>
+    <button class="botao" @click="enviaEmit(pessoa.id)">
+      {{ !selecao ? "Selecionar" : "Desmarcar" }}
+    </button>
   </div>
 </template>
 
