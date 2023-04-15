@@ -1,22 +1,17 @@
 <script setup>
-import { ref, onMounted, watchEffect } from "vue";
+import { ref, computed } from "vue";
 import Usuario from "./Usuario.vue";
 import { provide } from "vue";
+import { useFetch } from "../composables/fetch";
 
-const pessoas = ref([]);
+const {
+  data: pessoas,
+  error,
+  carregando,
+} = useFetch("https://reqres.in/api/users?delay=3");
+
 const idsSelecao = ref([]);
-const pessoasSelecionadas = ref([]);
 const aviso = "Em caso de dúvidas, contate o suporte.";
-
-const buscaInformacoes = async () => {
-  const req = await fetch(`https://reqres.in/api/users?page=2`);
-  const json = await req.json();
-  return json.data;
-};
-
-onMounted(async () => {
-  pessoas.value = await buscaInformacoes();
-});
 
 const adicionaSelecao = (evento) => {
   if (idSelecionado(evento)) {
@@ -26,13 +21,14 @@ const adicionaSelecao = (evento) => {
   idsSelecao.value.push(evento);
 };
 
-watchEffect(() => {
-  pessoasSelecionadas.value = pessoas.value.filter((x) => idSelecionado(x.id));
-});
-
 const idSelecionado = (id) => {
   return idsSelecao.value.includes(id);
 };
+
+const pessoasSelecionadas = computed(() => {
+  if (!pessoas.value) return [];
+  return pessoas.value.filter((x) => idSelecionado(x.id));
+});
 
 provide("aviso", aviso);
 </script>
@@ -43,15 +39,18 @@ provide("aviso", aviso);
       {{ pm.first_name }}
     </span>
   </div>
-  <div class="pessoas">
+  <div class="pessoas" v-if="!carregando">
     <Usuario
       v-for="pessoa in pessoas"
       :key="pessoa.id"
       :pessoa="pessoa"
       :selecao="idSelecionado(pessoa.id)"
       @selecao="adicionaSelecao"
+      v-if="!error"
     ></Usuario>
+    <div v-else>{{ error }}</div>
   </div>
+  <div v-else>Carregando...</div>
 </template>
 
 <style scoped>
