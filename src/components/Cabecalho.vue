@@ -1,5 +1,12 @@
 <script setup>
-const nome = "Pablo Codes";
+import { computed } from "vue";
+import { useFetch } from "../composables/fetch";
+const { data } = useFetch(`https://reqres.in/api/users/3`);
+
+const nome = computed(() => {
+  if (!data.value) return "";
+  return `${data.value.first_name} ${data.value.last_name}`;
+});
 </script>
 
 <template>
