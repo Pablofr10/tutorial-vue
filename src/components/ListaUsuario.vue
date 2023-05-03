@@ -3,6 +3,9 @@ import { ref, onMounted, computed } from "vue";
 import Usuario from "./Usuario.vue";
 import { provide } from "vue";
 import { useFetch } from "../composables/fetch";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 
 const {
   data: pessoas,
@@ -30,6 +33,10 @@ const idSelecionado = (id) => {
   return idsSelecao.value.includes(id);
 };
 
+const redirecionaFuncionario = (id) => {
+  router.push(`/equipe/${id}`);
+};
+
 provide("aviso", aviso);
 </script>
 
@@ -43,14 +50,16 @@ provide("aviso", aviso);
     <h3>Carregando...</h3>
   </div>
   <div class="pessoas" v-else>
-    <Usuario
-      v-for="pessoa in pessoas"
-      :key="pessoa.id"
-      :pessoa="pessoa"
-      :selecao="idSelecionado(pessoa.id)"
-      @selecao="adicionaSelecao"
-      v-if="!error"
-    ></Usuario>
+    <div v-for="pessoa in pessoas" :key="pessoa.id" v-if="!error">
+      <button @click="redirecionaFuncionario(pessoa.id)">
+        Ver funcionário
+      </button>
+      <Usuario
+        :pessoa="pessoa"
+        :selecao="idSelecionado(pessoa.id)"
+        @selecao="adicionaSelecao"
+      ></Usuario>
+    </div>
     <div v-else>
       {{ error }}
     </div>

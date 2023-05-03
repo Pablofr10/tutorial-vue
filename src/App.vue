@@ -1,7 +1,5 @@
 <script setup>
 import Cabecalho from "./components/Cabecalho.vue";
-import ListaUsuario from "./components/ListaUsuario.vue";
-import Usuario from "./components/Usuario.vue";
 </script>
 
 <template>
@@ -12,7 +10,7 @@ import Usuario from "./components/Usuario.vue";
 
   <main>
     <!-- <Usuario></Usuario> -->
-    <ListaUsuario></ListaUsuario>
+    <router-view></router-view>
   </main>
 </template>
 
