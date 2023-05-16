@@ -3,6 +3,7 @@ import App from "./App.vue";
 import NavBar from "./components/NavBar.vue";
 import router from "./router";
 import { createPinia } from "pinia";
+import "./css/style.css";
 
 const pinia = createPinia();
 

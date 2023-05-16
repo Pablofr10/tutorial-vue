@@ -41,7 +41,7 @@ provide("aviso", aviso);
 </script>
 
 <template>
-  <div class="selecionados">
+  <div :class="lista.selecionados">
     <span v-for="pm in pessoasSelecionadas" :key="pm.id" class="card">
       {{ pm.first_name }}
     </span>
@@ -49,9 +49,9 @@ provide("aviso", aviso);
   <div v-if="carregando">
     <h3>Carregando...</h3>
   </div>
-  <div class="pessoas" v-else>
+  <div :class="lista.pessoas" v-else>
     <div v-for="pessoa in pessoas" :key="pessoa.id" v-if="!error">
-      <button @click="redirecionaFuncionario(pessoa.id)">
+      <button class="botao" @click="redirecionaFuncionario(pessoa.id)">
         Ver funcionário
       </button>
       <Usuario
@@ -66,7 +66,7 @@ provide("aviso", aviso);
   </div>
 </template>
 
-<style scoped>
+<style module="lista">
 .selecionados {
   display: flex;
   flex-wrap: wrap;

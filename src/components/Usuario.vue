@@ -23,7 +23,7 @@ const enviaEmit = (id) => {
 </script>
 
 <template>
-  <div class="perfil">
+  <div :class="usuario.perfil">
     <img :src="pessoa.avatar" alt="Perfil" />
     <strong>{{ pessoa.first_name }}</strong>
     <span>{{ pessoa.email }}</span>
@@ -34,23 +34,7 @@ const enviaEmit = (id) => {
   </div>
 </template>
 
-<style scoped>
-.botao {
-  margin: 5px auto;
-  padding: 5px;
-  display: block;
-  background: darkcyan;
-  border-radius: 5px;
-  border-style: none;
-  cursor: pointer;
-}
-button:disabled,
-button[disabled] {
-  border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
-  cursor: default;
-}
+<style module="usuario">
 .perfil {
   width: 150px;
   text-align: center;

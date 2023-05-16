@@ -7,10 +7,15 @@
       <option v-for="c in cargos" :value="c" :key="c">{{ c }}</option>
     </select>
     <div>
-      <button @click="storeLogin.logarUsuario(pessoa.first_name)">Logar</button>
+      <button
+        :class="funcionario.botaoLogin"
+        @click="storeLogin.logarUsuario(pessoa.first_name)"
+      >
+        Logar
+      </button>
     </div>
     <div>
-      <button @click="buscaCores()">Busca Cores</button>
+      <button :style="style" @click="buscaCores()">Busca Cores</button>
     </div>
   </div>
 </template>
@@ -26,6 +31,8 @@ import { useLogin } from "../store/login";
 const store = useCargos();
 const storeLogin = useLogin();
 
+const style = "color: blue; padding: 5px;";
+
 const { adicionaCargo, buscaCores } = store;
 
 const router = useRoute();
@@ -33,6 +40,8 @@ const router = useRoute();
 const id = router.params.id;
 
 const cargoSelecionado = ref("");
+const botaoLogin = ref(" botao-login");
+const botao = ref("botao");
 
 const cargos = ["Gerência", "Supervisão", "Operacional"];
 
@@ -47,4 +56,8 @@ watch(cargoSelecionado, (novoCargo) => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style module="funcionario">
+.botaoLogin {
+  background: #57bf3e;
+}
+</style>
