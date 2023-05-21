@@ -1,17 +1,21 @@
 <script setup>
+import Visualizacao from "./components/Visualizacao.vue";
 import Cabecalho from "./components/Cabecalho.vue";
 </script>
 
 <template>
-  <NavBar v-once></NavBar>
-  <header>
-    <Cabecalho />
-  </header>
-
-  <main>
-    <!-- <Usuario></Usuario> -->
+  <Visualizacao>
+    <template #footer> Rodapé página </template>
+    <template v-slot:cabecalho>
+      <Cabecalho>
+        <template v-slot="slotProp">
+          <p class="titulo">{{ slotProp.mensagem }}</p>
+          <button @click="slotProp.funcao">Clique aqui</button>
+        </template>
+      </Cabecalho>
+    </template>
     <router-view></router-view>
-  </main>
+  </Visualizacao>
 </template>
 
 <style></style>
