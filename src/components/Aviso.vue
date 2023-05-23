@@ -8,6 +8,13 @@
 import { inject } from "vue";
 
 const aviso = inject("aviso");
+
+const chamaAlert = () => {
+  debugger;
+  alert("clicou");
+};
+
+defineExpose({ aviso, chamaAlert });
 </script>
 
 <style scoped>
