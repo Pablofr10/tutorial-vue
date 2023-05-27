@@ -4,8 +4,11 @@ import Usuario from "./Usuario.vue";
 import { provide } from "vue";
 import { useFetch } from "../composables/fetch";
 import { useRouter } from "vue-router";
+import Alerta from "./Alerta.vue";
 
 const router = useRouter();
+
+const mostraAlerta = ref(false);
 
 const {
   data: pessoas,
@@ -21,6 +24,7 @@ const adicionaSelecao = (evento) => {
     idsSelecao.value = idsSelecao.value.filter((x) => x !== evento);
     return;
   }
+  mostraAlerta.value = true;
   idsSelecao.value.push(evento);
 };
 
@@ -64,6 +68,11 @@ provide("aviso", aviso);
       {{ error }}
     </div>
   </div>
+  <Teleport to="#alerta">
+    <transition>
+      <Alerta v-if="mostraAlerta"></Alerta>
+    </transition>
+  </Teleport>
 </template>
 
 <style module="lista">
@@ -98,5 +107,14 @@ provide("aviso", aviso);
 .perfil span {
   display: block;
   font-size: 0.75rem;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>
